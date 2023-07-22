@@ -1,16 +1,16 @@
-import React, { useContext, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { AppContext } from '../../contexts/app.context'
+import React, { useContext, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { AppContext } from '../../contexts/app.context';
 
 const Home = () => {
-  const { permissions } = useContext(AppContext)
-  const navigate = useNavigate()
+  const { permissions } = useContext(AppContext);
+  const navigate = useNavigate();
   useEffect(() => {
-    if(permissions && permissions.length > 0){
-      navigate(`/${permissions[0]}`)
+    if (permissions && permissions.length > 0) {
+      navigate(`/${permissions[0]}`);
     }
-  }, [permissions])
-  
+  }, [permissions]);
+
   return (
     <>
       <div className='leading-normal tracking-normal text-white gradient'>
@@ -696,7 +696,7 @@ const Home = () => {
         </footer>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

@@ -1,51 +1,51 @@
-import { Button, DatePicker, Divider, Form, Input, Typography, message } from 'antd'
-import React, { useContext, useEffect } from 'react'
-import { AppContext } from '../../contexts/app.context'
-import dayjs from 'dayjs'
-import { useMutation } from 'react-query'
-import AuthApi from '../../apis/auth.api'
-import Auth from '../../utils/auth'
+import { Button, DatePicker, Divider, Form, Input, Typography, message } from 'antd';
+import React, { useContext, useEffect } from 'react';
+import { AppContext } from '../../contexts/app.context';
+import dayjs from 'dayjs';
+import { useMutation } from 'react-query';
+import AuthApi from '../../apis/auth.api';
+import Auth from '../../utils/auth';
 
-const { Title } = Typography
+const { Title } = Typography;
 
-const dateFormat = 'YYYY-MM-DD'
+const dateFormat = 'YYYY-MM-DD';
 
 const Profile = () => {
-  const { profile, setProfile } = useContext(AppContext)
-  const [form] = Form.useForm()
-  const [formChangePassword] = Form.useForm()
+  const { profile, setProfile } = useContext(AppContext);
+  const [form] = Form.useForm();
+  const [formChangePassword] = Form.useForm();
   useEffect(() => {
     form.setFieldsValue({
       ...profile,
-      date_of_birth: dayjs(profile.date_of_birth, dateFormat)
-    })
-  }, [profile])
+      date_of_birth: dayjs(profile.date_of_birth, dateFormat),
+    });
+  }, [profile]);
 
   const updateProfileMutation = useMutation({
     mutationFn: (body) => AuthApi.updateProfile(body),
     onSuccess: (data) => {
-      setProfile(data.data?.metadata?.user)
-      Auth.setProfileToLS(data.data?.metadata?.user)
-      message.success('Cập nhật thông tin thành công!')
-    }
-  })
+      setProfile(data.data?.metadata?.user);
+      Auth.setProfileToLS(data.data?.metadata?.user);
+      message.success('Cập nhật thông tin thành công!');
+    },
+  });
 
   const changePasswordMutation = useMutation({
     mutationFn: (body) => AuthApi.changePassword(body),
     onSuccess: () => {
-      message.success('Đổi mật khẩu thành công!')
-      formChangePassword.resetFields()
-    }
-  })
+      message.success('Đổi mật khẩu thành công!');
+      formChangePassword.resetFields();
+    },
+  });
 
   const onFinish = (body) => {
     updateProfileMutation.mutate({
-      ...body
-    })
-  }
+      ...body,
+    });
+  };
   const onFinishChangePassword = (body) => {
-    changePasswordMutation.mutate(body)
-  }
+    changePasswordMutation.mutate(body);
+  };
   return (
     <>
       <Title level={2}>Thông tin cá nhân</Title>
@@ -56,10 +56,10 @@ const Profile = () => {
         name='basic'
         style={{
           maxWidth: 600,
-          margin: '0 auto'
+          margin: '0 auto',
         }}
         initialValues={{
-          remember: true
+          remember: true,
         }}
         onFinish={onFinish}
         autoComplete='off'
@@ -70,8 +70,8 @@ const Profile = () => {
           rules={[
             {
               required: true,
-              message: 'Không được để trống!'
-            }
+              message: 'Không được để trống!',
+            },
           ]}
         >
           <Input />
@@ -83,8 +83,8 @@ const Profile = () => {
             {
               required: true,
               message: 'Không đúng định dạng!',
-              type: 'email'
-            }
+              type: 'email',
+            },
           ]}
         >
           <Input disabled />
@@ -108,8 +108,8 @@ const Profile = () => {
           rules={[
             {
               required: true,
-              message: 'Không được để trống!'
-            }
+              message: 'Không được để trống!',
+            },
           ]}
         >
           <Input />
@@ -120,8 +120,8 @@ const Profile = () => {
           rules={[
             {
               required: true,
-              message: 'Không được để trống!'
-            }
+              message: 'Không được để trống!',
+            },
           ]}
         >
           <Input />
@@ -130,8 +130,8 @@ const Profile = () => {
           rules={[
             {
               required: true,
-              message: 'Không được để trống!'
-            }
+              message: 'Không được để trống!',
+            },
           ]}
           name='date_of_birth'
           label='Ngày sinh'
@@ -157,10 +157,10 @@ const Profile = () => {
         name='chnage_pass'
         style={{
           maxWidth: 600,
-          margin: '0 auto'
+          margin: '0 auto',
         }}
         initialValues={{
-          remember: true
+          remember: true,
         }}
         onFinish={onFinishChangePassword}
         autoComplete='off'
@@ -172,8 +172,8 @@ const Profile = () => {
           rules={[
             {
               required: true,
-              message: 'Không được để trống!'
-            }
+              message: 'Không được để trống!',
+            },
           ]}
         >
           <Input.Password />
@@ -184,8 +184,8 @@ const Profile = () => {
           rules={[
             {
               required: true,
-              message: 'Bắt buộc có 8 ký tự, ít nhất 1 chữ hoặc 1 số!'
-            }
+              message: 'Bắt buộc có 8 ký tự, ít nhất 1 chữ hoặc 1 số!',
+            },
           ]}
         >
           <Input.Password />
@@ -203,7 +203,7 @@ const Profile = () => {
         </Form.Item>
       </Form>
     </>
-  )
-}
+  );
+};
 
-export default Profile
+export default Profile;

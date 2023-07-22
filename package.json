@@ -9,7 +9,7 @@
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "lint:fix": "eslint --fix src --ext js,jsx",
     "prettier": "prettier --check \"src/**/(*.jsx|*.js|*.css|*.scss)\"",
-    "prettier:fix": "prettier --write \"src/**/(*.jsx|*.js|*.css|*.scss)\"",
+    "prettier:fix": "prettier --write \"src/**/(*.jsx|*.js|*.css|*.scss|*.json)\"",
     "preview": "vite preview"
   },
   "dependencies": {

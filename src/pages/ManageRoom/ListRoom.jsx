@@ -1,48 +1,48 @@
-import { EditOutlined, DeleteOutlined, TeamOutlined } from '@ant-design/icons'
-import { Card, Col, Row, message, Typography, Space } from 'antd'
-import React, { useState } from 'react'
-import { useMutation, useQuery, useQueryClient } from 'react-query'
-import { useParams } from 'react-router-dom'
-import RoomApi from '../../apis/room.api'
+import { EditOutlined, DeleteOutlined, TeamOutlined } from '@ant-design/icons';
+import { Card, Col, Row, message, Typography, Space } from 'antd';
+import React, { useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useParams } from 'react-router-dom';
+import RoomApi from '../../apis/room.api';
 
-const { Meta } = Card
-const { Text } = Typography
+const { Meta } = Card;
+const { Text } = Typography;
 
 const ListRoom = ({ setOpen, setRoomId }) => {
-  const { buildingId } = useParams()
-  const queryClient = useQueryClient()
+  const { buildingId } = useParams();
+  const queryClient = useQueryClient();
   const { data, isLoading } = useQuery({
     queryKey: ['rooms', buildingId],
     queryFn: () => {
-      const controller = new AbortController()
+      const controller = new AbortController();
       setTimeout(() => {
-        controller.abort()
-      }, 5000)
-      return RoomApi.getRooms(buildingId)
+        controller.abort();
+      }, 5000);
+      return RoomApi.getRooms(buildingId);
     },
     enabled: buildingId !== undefined,
     keepPreviousData: true,
-    retry: 0
-  })
+    retry: 0,
+  });
 
   const openEdit = (id) => {
-    setRoomId(id)
-    setOpen(true)
-  }
+    setRoomId(id);
+    setOpen(true);
+  };
 
   const deleteRoomMutation = useMutation({
     mutationFn: (id) => RoomApi.deleteRoom(id),
     onSuccess: (_) => {
-      message.success(`Xóa thành công phòng`)
-      queryClient.invalidateQueries({ queryKey: ['rooms', buildingId], exact: true })
-    }
-  })
+      message.success(`Xóa thành công phòng`);
+      queryClient.invalidateQueries({ queryKey: ['rooms', buildingId], exact: true });
+    },
+  });
 
   const handleDelete = (id) => {
-    deleteRoomMutation.mutate(id)
-  }
+    deleteRoomMutation.mutate(id);
+  };
 
-  const rooms = data?.data?.metadata?.rooms || []
+  const rooms = data?.data?.metadata?.rooms || [];
 
   return (
     <>
@@ -56,10 +56,12 @@ const ListRoom = ({ setOpen, setRoomId }) => {
                 actions={[
                   <Space>
                     <TeamOutlined />
-                    <Text>{item.current_people}/{item.max_people}</Text>
+                    <Text>
+                      {item.current_people}/{item.max_people}
+                    </Text>
                   </Space>,
                   <EditOutlined onClick={() => openEdit(item.id)} key='edit' />,
-                  <DeleteOutlined onClick={() => handleDelete(item.id)} key='delete' />
+                  <DeleteOutlined onClick={() => handleDelete(item.id)} key='delete' />,
                 ]}
               >
                 <Meta title={item.name} description={item.description} />
@@ -68,7 +70,7 @@ const ListRoom = ({ setOpen, setRoomId }) => {
           ))}
       </Row>
     </>
-  )
-}
+  );
+};
 
-export default ListRoom
+export default ListRoom;

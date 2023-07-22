@@ -1,64 +1,64 @@
-import { Button, Col, Descriptions, Input, Modal, Result, Row, Spin, Typography, message } from 'antd'
-import React, { useState } from 'react'
-import { useMutation, useQuery, useQueryClient } from 'react-query'
-import BookingApi from '../../apis/booking.api'
-import dayjs from 'dayjs'
-import { useNavigate } from 'react-router-dom'
+import { Button, Col, Descriptions, Input, Modal, Result, Row, Spin, Typography, message } from 'antd';
+import React, { useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import BookingApi from '../../apis/booking.api';
+import dayjs from 'dayjs';
+import { useNavigate } from 'react-router-dom';
 
-const { Title } = Typography
-const { TextArea } = Input
+const { Title } = Typography;
+const { TextArea } = Input;
 
 const MyBooking = () => {
-  const navigate = useNavigate()
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [reason, setReason] = useState('')
+  const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [reason, setReason] = useState('');
   const showModal = () => {
-    setIsModalOpen(true)
-  }
+    setIsModalOpen(true);
+  };
   const handleOk = () => {
-    handleCancelBooking()
-  }
+    handleCancelBooking();
+  };
   const handleCancel = () => {
-    setIsModalOpen(false)
-    setReason('')
-  }
-  const queryClient = useQueryClient()
+    setIsModalOpen(false);
+    setReason('');
+  };
+  const queryClient = useQueryClient();
   const { data, isLoading } = useQuery({
     queryKey: ['my-booking'],
     queryFn: () => {
-      const controller = new AbortController()
+      const controller = new AbortController();
       setTimeout(() => {
-        controller.abort()
-      }, 5000)
-      return BookingApi.getMyBooking()
+        controller.abort();
+      }, 5000);
+      return BookingApi.getMyBooking();
     },
     keepPreviousData: true,
-    retry: 0
-  })
+    retry: 0,
+  });
   const cancelBookingMutation = useMutation({
     mutationFn: (id) => BookingApi.cancelMyBooking(id, { reason }),
     onSuccess: (_) => {
-      message.success(`Hủy yêu cầu thành công`)
-      handleCancel()
-      queryClient.invalidateQueries({ queryKey: ['my-booking'], exact: true })
-    }
-  })
+      message.success(`Hủy yêu cầu thành công`);
+      handleCancel();
+      queryClient.invalidateQueries({ queryKey: ['my-booking'], exact: true });
+    },
+  });
   const quitRoomMutation = useMutation({
     mutationFn: (id) => BookingApi.quitRoom(id, { reason }),
     onSuccess: (_) => {
-      message.success(`Rời phòng thành công`)
-      handleCancel()
-      queryClient.invalidateQueries({ queryKey: ['my-booking'], exact: true })
-    }
-  })
-  const booking = data?.data?.metadata?.booking || null
-  const building = data?.data?.metadata?.building || null
+      message.success(`Rời phòng thành công`);
+      handleCancel();
+      queryClient.invalidateQueries({ queryKey: ['my-booking'], exact: true });
+    },
+  });
+  const booking = data?.data?.metadata?.booking || null;
+  const building = data?.data?.metadata?.building || null;
   const handleCancelBooking = () => {
     if (booking.status === 'SUCCESS_PAYMENT') {
-      return quitRoomMutation.mutate(booking.id)
+      return quitRoomMutation.mutate(booking.id);
     }
-    cancelBookingMutation.mutate(booking.id)
-  }
+    cancelBookingMutation.mutate(booking.id);
+  };
 
   return (
     <>
@@ -66,7 +66,7 @@ const MyBooking = () => {
       {isLoading && (
         <Spin
           style={{
-            marginTop: 40
+            marginTop: 40,
           }}
           tip='Loading'
           size='large'
@@ -83,7 +83,7 @@ const MyBooking = () => {
               extra={[
                 <Button onClick={() => navigate('/list-building')} type='primary' key='console'>
                   Xem danh sách các phòng
-                </Button>
+                </Button>,
                 // <Button key='buy'>Buy Again</Button>
               ]}
             />
@@ -99,7 +99,9 @@ const MyBooking = () => {
                 {booking.start_date ? dayjs(booking.start_date).format('DD/MM/YYYY') : 'Chưa vào ở'}
               </Descriptions.Item>
               <Descriptions.Item label='Ngày hết hạn'>
-                {booking.start_date ? dayjs(booking.start_date).add(booking.months, 'months').format('DD/MM/YYYY') : 'Chưa xác định'}
+                {booking.start_date
+                  ? dayjs(booking.start_date).add(booking.months, 'months').format('DD/MM/YYYY')
+                  : 'Chưa xác định'}
               </Descriptions.Item>
               <Descriptions.Item label='Tiền phòng'>{booking.room?.price * booking.months}</Descriptions.Item>
             </Descriptions>
@@ -115,7 +117,7 @@ const MyBooking = () => {
                 extra={[
                   <Button onClick={showModal} type='primary' key='console'>
                     Hủy yêu cầu
-                  </Button>
+                  </Button>,
                   // <Button key='buy'>Buy Again</Button>
                 ]}
               />
@@ -141,7 +143,7 @@ const MyBooking = () => {
                         Nội dung chuyển khoản: {booking.room?.name} - {booking.code_payment}
                       </li>
                     </ul>
-                  </>
+                  </>,
                 ]}
               />
             )}
@@ -152,7 +154,7 @@ const MyBooking = () => {
                 extra={[
                   <Button onClick={showModal} type='primary' key='console'>
                     Rời phòng
-                  </Button>
+                  </Button>,
                   // <Button key='buy'>Buy Again</Button>
                 ]}
               />
@@ -175,14 +177,14 @@ const MyBooking = () => {
             onClick={handleOk}
           >
             {'Xác nhận'}
-          </Button>
+          </Button>,
         ]}
         onCancel={handleCancel}
       >
         <TextArea value={reason} onChange={(e) => setReason(e.target.value)} rows={4} placeholder='Nhập lý do...' />
       </Modal>
     </>
-  )
-}
+  );
+};
 
-export default MyBooking
+export default MyBooking;

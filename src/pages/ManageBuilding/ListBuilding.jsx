@@ -1,45 +1,45 @@
-import { EditOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons'
-import { Card, Col, Row, message } from 'antd'
-import React, { useState } from 'react'
-import { useMutation, useQuery, useQueryClient } from 'react-query'
-import BuildingApi from '../../apis/building.api'
-import { Link } from 'react-router-dom'
-const { Meta } = Card
+import { EditOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons';
+import { Card, Col, Row, message } from 'antd';
+import React, { useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import BuildingApi from '../../apis/building.api';
+import { Link } from 'react-router-dom';
+const { Meta } = Card;
 
 const ListBuilding = ({ setOpen, setBuildingId }) => {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   const { data, isLoading } = useQuery({
     queryKey: ['buildings'],
     queryFn: () => {
-      const controller = new AbortController()
+      const controller = new AbortController();
       setTimeout(() => {
-        controller.abort()
-      }, 5000)
-      return BuildingApi.getBuildings()
+        controller.abort();
+      }, 5000);
+      return BuildingApi.getBuildings();
     },
     keepPreviousData: true,
-    retry: 0
-  })
+    retry: 0,
+  });
 
   const openEdit = (id) => {
-    setBuildingId(id)
-    setOpen(true)
-  }
+    setBuildingId(id);
+    setOpen(true);
+  };
 
   const deleteBuildingMutation = useMutation({
     mutationFn: (id) => BuildingApi.deleteBuilding(id),
     onSuccess: (_) => {
-      message.success(`Xóa thành công tòa nhà`)
-      queryClient.invalidateQueries({ queryKey: ['buildings'], exact: true })
-    }
-  })
+      message.success(`Xóa thành công tòa nhà`);
+      queryClient.invalidateQueries({ queryKey: ['buildings'], exact: true });
+    },
+  });
 
   const handleDelete = (id) => {
-    deleteBuildingMutation.mutate(id)
-  }
+    deleteBuildingMutation.mutate(id);
+  };
 
-  const buildings = data?.data?.metadata?.buildings || []
+  const buildings = data?.data?.metadata?.buildings || [];
   return (
     <>
       <Row gutter={[16, 16]}>
@@ -54,7 +54,7 @@ const ListBuilding = ({ setOpen, setBuildingId }) => {
                     <EyeOutlined key={'view'} />
                   </Link>,
                   <EditOutlined onClick={() => openEdit(item.id)} key='edit' />,
-                  <DeleteOutlined onClick={() => handleDelete(item.id)} key='delete' />
+                  <DeleteOutlined onClick={() => handleDelete(item.id)} key='delete' />,
                 ]}
               >
                 <Meta title={item.name} description={item.description} />
@@ -63,7 +63,7 @@ const ListBuilding = ({ setOpen, setBuildingId }) => {
           ))}
       </Row>
     </>
-  )
-}
+  );
+};
 
-export default ListBuilding
+export default ListBuilding;

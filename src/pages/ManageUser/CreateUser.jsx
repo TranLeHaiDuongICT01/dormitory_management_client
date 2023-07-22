@@ -1,68 +1,68 @@
-import React, { useEffect } from 'react'
-import { Button, Col, DatePicker, Form, Input, Modal, Row, Select, message } from 'antd'
-import { useMutation, useQuery, useQueryClient } from 'react-query'
-import UserApi from '../../apis/user.api'
-import dayjs from 'dayjs'
+import React, { useEffect } from 'react';
+import { Button, Col, DatePicker, Form, Input, Modal, Row, Select, message } from 'antd';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import UserApi from '../../apis/user.api';
+import dayjs from 'dayjs';
 
-const dateFormat = 'YYYY-MM-DD'
+const dateFormat = 'YYYY-MM-DD';
 
 const CreateUser = ({ isModalOpen, setIsModalOpen, userId = null, setUserId }) => {
-  const [form] = Form.useForm()
-  const queryClient = useQueryClient()
+  const [form] = Form.useForm();
+  const queryClient = useQueryClient();
   const handleOk = async () => {
-    await form.validateFields()
-    handleCreateUser()
-  }
+    await form.validateFields();
+    handleCreateUser();
+  };
   const handleCancel = () => {
-    setIsModalOpen(false)
-    setUserId(null)
-    form.resetFields()
-  }
+    setIsModalOpen(false);
+    setUserId(null);
+    form.resetFields();
+  };
   const addUserMutation = useMutation({
     mutationFn: (body) => UserApi.createUser(body),
     onSuccess: () => {
-      message.success('Tạo user thành công')
-      form.resetFields()
-      setIsModalOpen(false)
-      queryClient.invalidateQueries({ queryKey: ['users'], exact: true })
-    }
-  })
+      message.success('Tạo user thành công');
+      form.resetFields();
+      setIsModalOpen(false);
+      queryClient.invalidateQueries({ queryKey: ['users'], exact: true });
+    },
+  });
 
   const handleCreateUser = () => {
-    console.log('100 đ', form.getFieldsValue())
+    console.log('100 đ', form.getFieldsValue());
     if (userId) {
-      updateUserMutation.mutateAsync()
+      updateUserMutation.mutateAsync();
     } else {
-      addUserMutation.mutateAsync(form.getFieldsValue())
+      addUserMutation.mutateAsync(form.getFieldsValue());
     }
-  }
+  };
 
   const { data } = useQuery({
     queryKey: ['user', userId],
     queryFn: () => UserApi.getUser(userId),
     enabled: userId !== null,
-    staleTime: 1000 * 10
-  })
+    staleTime: 1000 * 10,
+  });
   useEffect(() => {
     if (data) {
       form.setFieldsValue({
         ...data.data?.metadata?.user,
-        date_of_birth: dayjs(data.data?.metadata?.user.date_of_birth, dateFormat)
-      })
+        date_of_birth: dayjs(data.data?.metadata?.user.date_of_birth, dateFormat),
+      });
     }
-  }, [data])
+  }, [data]);
 
   const updateUserMutation = useMutation({
     mutationFn: (_) => UserApi.updateUser(userId, form.getFieldsValue()),
     onSuccess: (data) => {
-      queryClient.setQueryData(['user', userId], data.data.metadata.user)
-      message.success('Cập nhật user thành công')
-      form.resetFields()
-      setIsModalOpen(false)
-      setUserId(null)
-      queryClient.invalidateQueries({ queryKey: ['users'], exact: true })
-    }
-  })
+      queryClient.setQueryData(['user', userId], data.data.metadata.user);
+      message.success('Cập nhật user thành công');
+      form.resetFields();
+      setIsModalOpen(false);
+      setUserId(null);
+      queryClient.invalidateQueries({ queryKey: ['users'], exact: true });
+    },
+  });
   return (
     <>
       <Modal
@@ -78,7 +78,7 @@ const CreateUser = ({ isModalOpen, setIsModalOpen, userId = null, setUserId }) =
             onClick={handleOk}
           >
             {userId ? 'Cập nhật' : 'Tạo mới'}
-          </Button>
+          </Button>,
         ]}
         width={800}
         title={userId ? 'Cập nhật user' : 'Tạo mới user'}
@@ -90,10 +90,10 @@ const CreateUser = ({ isModalOpen, setIsModalOpen, userId = null, setUserId }) =
           layout='vertical'
           name='basic'
           style={{
-            maxWidth: 800
+            maxWidth: 800,
           }}
           initialValues={{
-            remember: true
+            remember: true,
           }}
           // onFinish={onFinish}
           autoComplete='off'
@@ -106,8 +106,8 @@ const CreateUser = ({ isModalOpen, setIsModalOpen, userId = null, setUserId }) =
                 rules={[
                   {
                     required: true,
-                    message: 'Không được để trống!'
-                  }
+                    message: 'Không được để trống!',
+                  },
                 ]}
               >
                 <Input />
@@ -121,8 +121,8 @@ const CreateUser = ({ isModalOpen, setIsModalOpen, userId = null, setUserId }) =
                   {
                     required: true,
                     message: 'Không đúng định dạng!',
-                    type: 'email'
-                  }
+                    type: 'email',
+                  },
                 ]}
               >
                 <Input />
@@ -140,30 +140,30 @@ const CreateUser = ({ isModalOpen, setIsModalOpen, userId = null, setUserId }) =
                 rules={[
                   {
                     required: true,
-                    message: 'Không được để trống!'
-                  }
+                    message: 'Không được để trống!',
+                  },
                 ]}
                 name='role'
                 label='Role'
               >
                 <Select
                   style={{
-                    width: 120
+                    width: 120,
                   }}
                   // onChange={handleChange}
                   options={[
                     {
                       value: 'USER',
-                      label: 'User'
+                      label: 'User',
                     },
                     {
                       value: 'MANAGER',
-                      label: 'Manager'
+                      label: 'Manager',
                     },
                     {
                       value: 'ADMIN',
-                      label: 'Admin'
-                    }
+                      label: 'Admin',
+                    },
                   ]}
                 />
               </Form.Item>
@@ -180,8 +180,8 @@ const CreateUser = ({ isModalOpen, setIsModalOpen, userId = null, setUserId }) =
                 rules={[
                   {
                     required: true,
-                    message: 'Không được để trống!'
-                  }
+                    message: 'Không được để trống!',
+                  },
                 ]}
                 name='date_of_birth'
                 label='Ngày sinh'
@@ -199,8 +199,8 @@ const CreateUser = ({ isModalOpen, setIsModalOpen, userId = null, setUserId }) =
                   rules={[
                     {
                       required: true,
-                      message: 'Bắt buộc có 8 ký tự, ít nhất 1 chữ hoặc 1 số!'
-                    }
+                      message: 'Bắt buộc có 8 ký tự, ít nhất 1 chữ hoặc 1 số!',
+                    },
                   ]}
                 >
                   <Input.Password />
@@ -211,7 +211,7 @@ const CreateUser = ({ isModalOpen, setIsModalOpen, userId = null, setUserId }) =
         </Form>
       </Modal>
     </>
-  )
-}
+  );
+};
 
-export default CreateUser
+export default CreateUser;

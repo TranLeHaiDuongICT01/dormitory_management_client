@@ -1,5 +1,5 @@
-import { createContext, useState } from 'react'
-import Auth from '../utils/auth'
+import { createContext, useState } from 'react';
+import Auth from '../utils/auth';
 
 const initialAppcontext = {
   isAuthenticated: Boolean(Auth.getTokenFromLs().access_token),
@@ -7,15 +7,15 @@ const initialAppcontext = {
   profile: Auth.getProfileFromLS(),
   setProfile: () => null,
   permissions: Auth.getPermissionsFromLS() || [],
-  setPermissions: () => null
-}
+  setPermissions: () => null,
+};
 
-export const AppContext = createContext(initialAppcontext)
+export const AppContext = createContext(initialAppcontext);
 
 export const AppProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(initialAppcontext.isAuthenticated)
-  const [profile, setProfile] = useState(initialAppcontext.profile)
-  const [permissions, setPermissions] = useState(initialAppcontext.permissions)
+  const [isAuthenticated, setIsAuthenticated] = useState(initialAppcontext.isAuthenticated);
+  const [profile, setProfile] = useState(initialAppcontext.profile);
+  const [permissions, setPermissions] = useState(initialAppcontext.permissions);
 
   return (
     <AppContext.Provider
@@ -25,10 +25,10 @@ export const AppProvider = ({ children }) => {
         profile,
         setProfile,
         permissions,
-        setPermissions
+        setPermissions,
       }}
     >
       {children}
     </AppContext.Provider>
-  )
-}
+  );
+};

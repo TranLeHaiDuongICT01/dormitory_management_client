@@ -1,31 +1,31 @@
-import { Navigate, Outlet, useRoutes } from 'react-router-dom'
-import Dashboard from './pages/Dashboard/Dashboard'
-import AuthLayout from './layouts/AuthLayout/AuthLayout'
-import Login from './pages/Login/Login'
-import Register from './pages/Register/Register'
-import { useContext } from 'react'
-import { AppContext } from './contexts/app.context'
-import MainLayout from './layouts/MainLayout/MainLayout'
-import Profile from './pages/Profile/Profile'
-import ManageUser from './pages/ManageUser/ManageUser'
-import ManageBuilding from './pages/ManageBuilding/ManageBuilding'
-import ManageRoom from './pages/ManageRoom/ManageRoom'
-import ForgotPassword from './pages/ForgotPassword/ForgotPassword'
-import ResetPassword from './pages/ResetPassword/ResetPassword'
-import ListBuilding from './pages/ListBuilding/ListBuilding'
-import ListRoom from './pages/ListRoom/ListRoom'
-import MyBooking from './pages/MyBooking/MyBooking'
-import ManageBooking from './pages/ManageBooking/ManageBooking'
-import Home from './pages/Home/Home'
+import { Navigate, Outlet, useRoutes } from 'react-router-dom';
+import Dashboard from './pages/Dashboard/Dashboard';
+import AuthLayout from './layouts/AuthLayout/AuthLayout';
+import Login from './pages/Login/Login';
+import Register from './pages/Register/Register';
+import { useContext } from 'react';
+import { AppContext } from './contexts/app.context';
+import MainLayout from './layouts/MainLayout/MainLayout';
+import Profile from './pages/Profile/Profile';
+import ManageUser from './pages/ManageUser/ManageUser';
+import ManageBuilding from './pages/ManageBuilding/ManageBuilding';
+import ManageRoom from './pages/ManageRoom/ManageRoom';
+import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
+import ResetPassword from './pages/ResetPassword/ResetPassword';
+import ListBuilding from './pages/ListBuilding/ListBuilding';
+import ListRoom from './pages/ListRoom/ListRoom';
+import MyBooking from './pages/MyBooking/MyBooking';
+import ManageBooking from './pages/ManageBooking/ManageBooking';
+import Home from './pages/Home/Home';
 
 function ProtectedRoute() {
-  const { isAuthenticated } = useContext(AppContext)
-  return isAuthenticated ? <Outlet /> : <Navigate to={'/login'} />
+  const { isAuthenticated } = useContext(AppContext);
+  return isAuthenticated ? <Outlet /> : <Navigate to={'/login'} />;
 }
 
 function RejectedRoute() {
-  const { isAuthenticated } = useContext(AppContext)
-  return !isAuthenticated ? <Outlet /> : <Navigate to={'/'} />
+  const { isAuthenticated } = useContext(AppContext);
+  return !isAuthenticated ? <Outlet /> : <Navigate to={'/'} />;
 }
 
 export default function useRouteElements() {
@@ -40,7 +40,7 @@ export default function useRouteElements() {
             <AuthLayout>
               <Login />
             </AuthLayout>
-          )
+          ),
         },
         {
           path: '/register',
@@ -48,7 +48,7 @@ export default function useRouteElements() {
             <AuthLayout>
               <Register />
             </AuthLayout>
-          )
+          ),
         },
         {
           path: '/forgot-password',
@@ -56,7 +56,7 @@ export default function useRouteElements() {
             <AuthLayout>
               <ForgotPassword />
             </AuthLayout>
-          )
+          ),
         },
         {
           path: '/reset-password',
@@ -64,9 +64,9 @@ export default function useRouteElements() {
             <AuthLayout>
               <ResetPassword />
             </AuthLayout>
-          )
-        }
-      ]
+          ),
+        },
+      ],
     },
     {
       path: '',
@@ -78,7 +78,7 @@ export default function useRouteElements() {
             <MainLayout>
               <Profile />
             </MainLayout>
-          )
+          ),
         },
         {
           path: '/manage-user',
@@ -86,7 +86,7 @@ export default function useRouteElements() {
             <MainLayout>
               <ManageUser />
             </MainLayout>
-          )
+          ),
         },
         {
           path: '/manage-building',
@@ -94,7 +94,7 @@ export default function useRouteElements() {
             <MainLayout>
               <ManageBuilding />
             </MainLayout>
-          )
+          ),
         },
         {
           path: '/manage-room/:buildingId',
@@ -102,7 +102,7 @@ export default function useRouteElements() {
             <MainLayout>
               <ManageRoom />
             </MainLayout>
-          )
+          ),
         },
         {
           path: '/list-building',
@@ -110,7 +110,7 @@ export default function useRouteElements() {
             <MainLayout>
               <ListBuilding />
             </MainLayout>
-          )
+          ),
         },
         {
           path: '/list-room/:buildingId',
@@ -118,7 +118,7 @@ export default function useRouteElements() {
             <MainLayout>
               <ListRoom />
             </MainLayout>
-          )
+          ),
         },
         {
           path: '/my-booking',
@@ -126,7 +126,7 @@ export default function useRouteElements() {
             <MainLayout>
               <MyBooking />
             </MainLayout>
-          )
+          ),
         },
         {
           path: '/manage-booking',
@@ -134,7 +134,7 @@ export default function useRouteElements() {
             <MainLayout>
               <ManageBooking />
             </MainLayout>
-          )
+          ),
         },
         {
           path: '/dashboard',
@@ -142,16 +142,16 @@ export default function useRouteElements() {
             <MainLayout>
               <Dashboard />
             </MainLayout>
-          )
-        }
-      ]
+          ),
+        },
+      ],
     },
     {
       path: '',
       index: true,
-      element: <Home />
-    }
-  ])
+      element: <Home />,
+    },
+  ]);
 
-  return routeElements
+  return routeElements;
 }

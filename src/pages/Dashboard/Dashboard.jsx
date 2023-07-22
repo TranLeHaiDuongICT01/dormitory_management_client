@@ -1,23 +1,23 @@
-import { Card, Col, Divider, Row, Statistic, Typography } from 'antd'
-import CountUp from 'react-countup'
-import { useQuery } from 'react-query'
-import UserApi from '../../apis/user.api'
-const formatter = (value) => <CountUp end={value} separator=',' />
-const { Title } = Typography
+import { Card, Col, Divider, Row, Statistic, Typography } from 'antd';
+import CountUp from 'react-countup';
+import { useQuery } from 'react-query';
+import UserApi from '../../apis/user.api';
+const formatter = (value) => <CountUp end={value} separator=',' />;
+const { Title } = Typography;
 const Dashboard = () => {
   const { data, isLoading } = useQuery({
     queryKey: ['summary'],
     queryFn: () => {
-      const controller = new AbortController()
+      const controller = new AbortController();
       setTimeout(() => {
-        controller.abort()
-      }, 5000)
-      return UserApi.getSummary()
+        controller.abort();
+      }, 5000);
+      return UserApi.getSummary();
     },
     keepPreviousData: true,
-    retry: 0
-  })
-  const summary = data?.data?.metadata || null
+    retry: 0,
+  });
+  const summary = data?.data?.metadata || null;
   return (
     <>
       <Title level={3}>Dashboard</Title>
@@ -45,7 +45,7 @@ const Dashboard = () => {
         </Col>
       </Row>
     </>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;

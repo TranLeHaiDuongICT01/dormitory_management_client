@@ -1,58 +1,58 @@
-import React, { useEffect } from 'react'
-import { Button, Col, Drawer, Form, Input, Row, Space, message } from 'antd'
-import { useMutation, useQuery, useQueryClient } from 'react-query'
-import BuildingApi from '../../apis/building.api'
+import React, { useEffect } from 'react';
+import { Button, Col, Drawer, Form, Input, Row, Space, message } from 'antd';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import BuildingApi from '../../apis/building.api';
 
 const CreateBuilding = ({ open, setOpen, buildingId, setBuildingId }) => {
-  const [form] = Form.useForm()
-  const queryClient = useQueryClient()
+  const [form] = Form.useForm();
+  const queryClient = useQueryClient();
 
   const onClose = () => {
-    setOpen(false)
-    setBuildingId(null)
-    form.resetFields()
-  }
+    setOpen(false);
+    setBuildingId(null);
+    form.resetFields();
+  };
 
   const { data } = useQuery({
     queryKey: ['building', buildingId],
     queryFn: () => BuildingApi.getBuilding(buildingId),
     enabled: buildingId !== null,
-    staleTime: 1000 * 10
-  })
+    staleTime: 1000 * 10,
+  });
 
   useEffect(() => {
     if (data) {
       form.setFieldsValue({
-        ...data.data?.metadata?.building
-      })
+        ...data.data?.metadata?.building,
+      });
     }
-  }, [data])
+  }, [data]);
 
   const addBuildingMutation = useMutation({
     mutationFn: () => BuildingApi.createBuilding(form.getFieldsValue()),
     onSuccess: () => {
-      message.success('Tạo tòa nhà thành công')
-      onClose()
-      queryClient.invalidateQueries({ queryKey: ['buildings'], exact: true })
-    }
-  })
+      message.success('Tạo tòa nhà thành công');
+      onClose();
+      queryClient.invalidateQueries({ queryKey: ['buildings'], exact: true });
+    },
+  });
 
   const updateBuildingMutation = useMutation({
     mutationFn: (_) => BuildingApi.updateBuilding(buildingId, form.getFieldsValue()),
     onSuccess: (data) => {
-      queryClient.setQueryData(['building', buildingId], data.data.metadata.building)
-      message.success('Cập nhật tòa nhà thành công')
-      onClose()
-      queryClient.invalidateQueries({ queryKey: ['buildings'], exact: true })
-    }
-  })
+      queryClient.setQueryData(['building', buildingId], data.data.metadata.building);
+      message.success('Cập nhật tòa nhà thành công');
+      onClose();
+      queryClient.invalidateQueries({ queryKey: ['buildings'], exact: true });
+    },
+  });
 
   const handleSubmit = () => {
     if (buildingId) {
-      return updateBuildingMutation.mutate()
+      return updateBuildingMutation.mutate();
     }
-    addBuildingMutation.mutate()
-  }
+    addBuildingMutation.mutate();
+  };
   return (
     <>
       <Drawer
@@ -61,7 +61,7 @@ const CreateBuilding = ({ open, setOpen, buildingId, setBuildingId }) => {
         onClose={onClose}
         open={open}
         bodyStyle={{
-          paddingBottom: 80
+          paddingBottom: 80,
         }}
         extra={
           <Space>
@@ -86,8 +86,8 @@ const CreateBuilding = ({ open, setOpen, buildingId, setBuildingId }) => {
                 rules={[
                   {
                     required: true,
-                    message: 'Không được để trống'
-                  }
+                    message: 'Không được để trống',
+                  },
                 ]}
               >
                 <Input placeholder='Nhập tên tòa nhà...' />
@@ -102,8 +102,8 @@ const CreateBuilding = ({ open, setOpen, buildingId, setBuildingId }) => {
                 rules={[
                   {
                     required: true,
-                    message: 'Nhập miêu tả tòa nhà...'
-                  }
+                    message: 'Nhập miêu tả tòa nhà...',
+                  },
                 ]}
               >
                 <Input.TextArea rows={4} placeholder='please enter url description' />
@@ -113,7 +113,7 @@ const CreateBuilding = ({ open, setOpen, buildingId, setBuildingId }) => {
         </Form>
       </Drawer>
     </>
-  )
-}
+  );
+};
 
-export default CreateBuilding
+export default CreateBuilding;

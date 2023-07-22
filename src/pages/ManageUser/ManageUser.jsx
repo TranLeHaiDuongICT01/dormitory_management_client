@@ -1,14 +1,14 @@
-import React, { useState } from 'react'
-import { Button, Divider, Space, Typography } from 'antd'
-import ListUser from './ListUser'
-import { PlusOutlined } from '@ant-design/icons'
-import CreateUser from './CreateUser'
+import React, { useState } from 'react';
+import { Button, Divider, Space, Typography } from 'antd';
+import ListUser from './ListUser';
+import { PlusOutlined } from '@ant-design/icons';
+import CreateUser from './CreateUser';
 
-const { Title } = Typography
+const { Title } = Typography;
 
 const ManageUser = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [userId, setUserId] = useState(null)
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [userId, setUserId] = useState(null);
   return (
     <>
       <Title level={3}>Danh sách user</Title>
@@ -21,7 +21,7 @@ const ManageUser = () => {
       <ListUser setUserId={setUserId} setIsModalOpen={setIsModalOpen} />
       <CreateUser setUserId={setUserId} userId={userId} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
     </>
-  )
-}
+  );
+};
 
-export default ManageUser
+export default ManageUser;

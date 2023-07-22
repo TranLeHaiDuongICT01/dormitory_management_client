@@ -1,28 +1,28 @@
-import React, { useContext } from 'react'
-import { Typography, Button, Form, Input, Divider, DatePicker } from 'antd'
-import { useMutation } from 'react-query'
-import AuthApi from '../../apis/auth.api'
-import { Link, useNavigate } from 'react-router-dom'
-import { AppContext } from '../../contexts/app.context'
+import React, { useContext } from 'react';
+import { Typography, Button, Form, Input, Divider, DatePicker } from 'antd';
+import { useMutation } from 'react-query';
+import AuthApi from '../../apis/auth.api';
+import { Link, useNavigate } from 'react-router-dom';
+import { AppContext } from '../../contexts/app.context';
 
-const { Title, Text } = Typography
+const { Title, Text } = Typography;
 
 const Register = () => {
-  const navigate = useNavigate()
-  const { setIsAuthenticated, setProfile, setPermissions } = useContext(AppContext)
+  const navigate = useNavigate();
+  const { setIsAuthenticated, setProfile, setPermissions } = useContext(AppContext);
   const registerAccountMutation = useMutation({
-    mutationFn: (body) => AuthApi.registerAccount(body)
-  })
+    mutationFn: (body) => AuthApi.registerAccount(body),
+  });
   const onFinish = (body) => {
     registerAccountMutation.mutate(body, {
       onSuccess: (data) => {
-        setIsAuthenticated(true)
-        setProfile(data.data?.metadata?.user)
-        setPermissions(data.data?.metadata?.permissions)
-        navigate(`/${data.data?.metadata?.permissions[0]}`)
-      }
-    })
-  }
+        setIsAuthenticated(true);
+        setProfile(data.data?.metadata?.user);
+        setPermissions(data.data?.metadata?.permissions);
+        navigate(`/${data.data?.metadata?.permissions[0]}`);
+      },
+    });
+  };
   return (
     <>
       <Title level={3}>Đăng ký</Title>
@@ -31,10 +31,10 @@ const Register = () => {
         layout='vertical'
         name='basic'
         style={{
-          maxWidth: 600
+          maxWidth: 600,
         }}
         initialValues={{
-          remember: true
+          remember: true,
         }}
         onFinish={onFinish}
         autoComplete='off'
@@ -45,8 +45,8 @@ const Register = () => {
           rules={[
             {
               required: true,
-              message: 'Không được để trống!'
-            }
+              message: 'Không được để trống!',
+            },
           ]}
         >
           <Input />
@@ -58,8 +58,8 @@ const Register = () => {
             {
               required: true,
               message: 'Không đúng định dạng!',
-              type: 'email'
-            }
+              type: 'email',
+            },
           ]}
         >
           <Input />
@@ -71,8 +71,8 @@ const Register = () => {
           rules={[
             {
               required: true,
-              message: 'Bắt buộc có 8 ký tự, ít nhất 1 chữ hoặc 1 số!'
-            }
+              message: 'Bắt buộc có 8 ký tự, ít nhất 1 chữ hoặc 1 số!',
+            },
           ]}
         >
           <Input.Password />
@@ -83,8 +83,8 @@ const Register = () => {
           rules={[
             {
               required: true,
-              message: 'Không được để trống!'
-            }
+              message: 'Không được để trống!',
+            },
           ]}
         >
           <Input />
@@ -95,8 +95,8 @@ const Register = () => {
           rules={[
             {
               required: true,
-              message: 'Không được để trống!'
-            }
+              message: 'Không được để trống!',
+            },
           ]}
         >
           <Input />
@@ -105,8 +105,8 @@ const Register = () => {
           rules={[
             {
               required: true,
-              message: 'Không được để trống!'
-            }
+              message: 'Không được để trống!',
+            },
           ]}
           name='date_of_birth'
           label='Ngày sinh'
@@ -114,19 +114,24 @@ const Register = () => {
           <DatePicker />
         </Form.Item>
         <Form.Item>
-          <Button loading={registerAccountMutation.isLoading} disabled={registerAccountMutation.isLoading} type='primary' htmlType='submit'>
+          <Button
+            loading={registerAccountMutation.isLoading}
+            disabled={registerAccountMutation.isLoading}
+            type='primary'
+            htmlType='submit'
+          >
             Đăng ký
           </Button>
         </Form.Item>
         <Form.Item>
-          <Text>Đã có tài khoản ?</Text> <Link to="/login">Đăng nhập</Link>
+          <Text>Đã có tài khoản ?</Text> <Link to='/login'>Đăng nhập</Link>
         </Form.Item>
         <Form.Item>
-          <Link to="/forgot-password">Quên mật khẩu</Link>
+          <Link to='/forgot-password'>Quên mật khẩu</Link>
         </Form.Item>
       </Form>
     </>
-  )
-}
+  );
+};
 
-export default Register
+export default Register;

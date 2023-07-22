@@ -1,67 +1,67 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { FileDoneOutlined, BarChartOutlined, TeamOutlined, GoldOutlined, HomeOutlined } from '@ant-design/icons'
+import React, { useContext, useEffect, useState } from 'react';
+import { FileDoneOutlined, BarChartOutlined, TeamOutlined, GoldOutlined, HomeOutlined } from '@ant-design/icons';
 
-import { Layout, Menu, theme } from 'antd'
-import Header from '../../components/Header/Header'
-import { Link, useNavigate } from 'react-router-dom'
-import { AppContext } from '../../contexts/app.context'
-const { Sider, Content } = Layout
+import { Layout, Menu, theme } from 'antd';
+import Header from '../../components/Header/Header';
+import { Link, useNavigate } from 'react-router-dom';
+import { AppContext } from '../../contexts/app.context';
+const { Sider, Content } = Layout;
 
 const MainLayout = ({ children }) => {
-  const [collapsed, setCollapsed] = useState(false)
-  const { permissions } = useContext(AppContext)
-  const [menu, setMenu] = useState([])
-  const navigate = useNavigate()
+  const [collapsed, setCollapsed] = useState(false);
+  const { permissions } = useContext(AppContext);
+  const [menu, setMenu] = useState([]);
+  const navigate = useNavigate();
   const {
-    token: { colorBgContainer }
-  } = theme.useToken()
+    token: { colorBgContainer },
+  } = theme.useToken();
   const listMenu = [
     {
       key: 'dashboard',
       icon: <BarChartOutlined />,
-      label: <Link to={'/dashboard'}>Dashboard</Link>
+      label: <Link to={'/dashboard'}>Dashboard</Link>,
     },
     {
       key: 'my-booking',
       icon: <HomeOutlined />,
-      label: <Link to={'/my-booking'}>Phòng của tôi</Link>
+      label: <Link to={'/my-booking'}>Phòng của tôi</Link>,
     },
     {
       key: 'list-building',
       icon: <GoldOutlined />,
-      label: <Link to={'/list-building'}>Danh sách tòa nhà</Link>
+      label: <Link to={'/list-building'}>Danh sách tòa nhà</Link>,
     },
     {
       key: 'manage-user',
       icon: <TeamOutlined />,
-      label: <Link to={'/manage-user'}>Quản lý User</Link>
+      label: <Link to={'/manage-user'}>Quản lý User</Link>,
     },
     {
       key: 'manage-building',
       icon: <GoldOutlined />,
-      label: <Link to={'/manage-building'}>Quản lý tòa nhà</Link>
+      label: <Link to={'/manage-building'}>Quản lý tòa nhà</Link>,
     },
     {
       key: 'manage-booking',
       icon: <FileDoneOutlined />,
-      label: <Link to={'/manage-booking'}>Quản lý đặt phòng</Link>
-    }
-  ]
+      label: <Link to={'/manage-booking'}>Quản lý đặt phòng</Link>,
+    },
+  ];
 
   useEffect(() => {
     if (permissions && permissions.length > 0) {
-      const newMenu = []
+      const newMenu = [];
       listMenu.forEach((item) => {
         if (permissions.includes(item.key)) {
-          newMenu.push(item)
+          newMenu.push(item);
         }
-      })
-      setMenu(newMenu)
+      });
+      setMenu(newMenu);
       if (newMenu.length > 0 && window.location.pathname === '/') {
-        navigate(newMenu[0].key)
+        navigate(newMenu[0].key);
       }
     }
-  }, [permissions])
+  }, [permissions]);
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
@@ -80,14 +80,14 @@ const MainLayout = ({ children }) => {
             margin: '24px 16px',
             padding: 24,
             minHeight: 280,
-            background: colorBgContainer
+            background: colorBgContainer,
           }}
         >
           {children}
         </Content>
       </Layout>
     </Layout>
-  )
-}
+  );
+};
 
-export default MainLayout
+export default MainLayout;

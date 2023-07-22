@@ -1,59 +1,59 @@
-import React, { useEffect } from 'react'
-import { Button, Col, Drawer, Form, Input, InputNumber, Row, Space, message } from 'antd'
-import { useMutation, useQuery, useQueryClient } from 'react-query'
-import RoomApi from '../../apis/room.api'
-import { useParams } from 'react-router-dom'
+import React, { useEffect } from 'react';
+import { Button, Col, Drawer, Form, Input, InputNumber, Row, Space, message } from 'antd';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import RoomApi from '../../apis/room.api';
+import { useParams } from 'react-router-dom';
 
 const CreateRoom = ({ open, setOpen, roomId, setRoomId }) => {
-  const [form] = Form.useForm()
-  const queryClient = useQueryClient()
-  const { buildingId } = useParams()
+  const [form] = Form.useForm();
+  const queryClient = useQueryClient();
+  const { buildingId } = useParams();
 
   const onClose = () => {
-    setOpen(false)
-    setRoomId(null)
-    form.resetFields()
-  }
+    setOpen(false);
+    setRoomId(null);
+    form.resetFields();
+  };
 
   const { data } = useQuery({
     queryKey: ['room', roomId],
     queryFn: () => RoomApi.getRoom(roomId),
     enabled: roomId !== null,
-    staleTime: 1000 * 10
-  })
+    staleTime: 1000 * 10,
+  });
 
   useEffect(() => {
     if (data) {
       form.setFieldsValue({
-        ...data.data?.metadata?.room
-      })
+        ...data.data?.metadata?.room,
+      });
     }
-  }, [data])
+  }, [data]);
 
   const addRoomMutation = useMutation({
     mutationFn: () => RoomApi.createRoom({ ...form.getFieldsValue(), building: buildingId }),
     onSuccess: () => {
-      message.success('Tạo phòng thành công')
-      onClose()
-      queryClient.invalidateQueries({ queryKey: ['rooms', buildingId], exact: true })
-    }
-  })
+      message.success('Tạo phòng thành công');
+      onClose();
+      queryClient.invalidateQueries({ queryKey: ['rooms', buildingId], exact: true });
+    },
+  });
   const updateRoomMutation = useMutation({
     mutationFn: (_) => RoomApi.updateRoom(roomId, form.getFieldsValue()),
     onSuccess: (data) => {
-      queryClient.setQueryData(['room', roomId], data.data.metadata.room)
-      message.success('Cập nhật phòng thành công')
-      onClose()
-      queryClient.invalidateQueries({ queryKey: ['rooms', buildingId], exact: true })
-    }
-  })
+      queryClient.setQueryData(['room', roomId], data.data.metadata.room);
+      message.success('Cập nhật phòng thành công');
+      onClose();
+      queryClient.invalidateQueries({ queryKey: ['rooms', buildingId], exact: true });
+    },
+  });
 
   const handleSubmit = () => {
-    if(roomId){
-      return updateRoomMutation.mutate()
+    if (roomId) {
+      return updateRoomMutation.mutate();
     }
-    addRoomMutation.mutate()
-  }
+    addRoomMutation.mutate();
+  };
   return (
     <>
       <Drawer
@@ -62,7 +62,7 @@ const CreateRoom = ({ open, setOpen, roomId, setRoomId }) => {
         onClose={onClose}
         open={open}
         bodyStyle={{
-          paddingBottom: 80
+          paddingBottom: 80,
         }}
         extra={
           <Space>
@@ -87,8 +87,8 @@ const CreateRoom = ({ open, setOpen, roomId, setRoomId }) => {
                 rules={[
                   {
                     required: true,
-                    message: 'Không được để trống'
-                  }
+                    message: 'Không được để trống',
+                  },
                 ]}
               >
                 <Input placeholder='Nhập tên phòng...' />
@@ -103,13 +103,13 @@ const CreateRoom = ({ open, setOpen, roomId, setRoomId }) => {
                 rules={[
                   {
                     required: true,
-                    message: 'Không được để trống'
-                  }
+                    message: 'Không được để trống',
+                  },
                 ]}
               >
                 <InputNumber
                   style={{
-                    width: '100%'
+                    width: '100%',
                   }}
                   min={1}
                   max={20}
@@ -124,13 +124,13 @@ const CreateRoom = ({ open, setOpen, roomId, setRoomId }) => {
                 rules={[
                   {
                     required: true,
-                    message: 'Không được để trống'
-                  }
+                    message: 'Không được để trống',
+                  },
                 ]}
               >
                 <InputNumber
                   style={{
-                    width: '100%'
+                    width: '100%',
                   }}
                   min={1}
                   defaultValue={0}
@@ -146,8 +146,8 @@ const CreateRoom = ({ open, setOpen, roomId, setRoomId }) => {
                 rules={[
                   {
                     required: true,
-                    message: 'Nhập miêu tả phòng...'
-                  }
+                    message: 'Nhập miêu tả phòng...',
+                  },
                 ]}
               >
                 <Input.TextArea rows={4} placeholder='please enter url description' />
@@ -157,7 +157,7 @@ const CreateRoom = ({ open, setOpen, roomId, setRoomId }) => {
         </Form>
       </Drawer>
     </>
-  )
-}
+  );
+};
 
-export default CreateRoom
+export default CreateRoom;

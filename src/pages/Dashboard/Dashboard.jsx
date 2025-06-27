@@ -20,7 +20,7 @@ const Dashboard = () => {
   const summary = data?.data?.metadata || null;
   return (
     <>
-      <Title level={3}>Dashboards</Title>
+      <Title level={3}>Dashboard</Title>
       <Divider />
       <Row gutter={16}>
         <Col span={6}>
